@@ -6,7 +6,7 @@ services:
   # The Time-Series Database
   influxdb:
     image: influxdb:2.7
-    container_name: demo_influxdb
+    container_name: demo_influxdb_1
     ports:
       - "8086:8086"
     volumes:
