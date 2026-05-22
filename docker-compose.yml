@@ -1,0 +1,25 @@
+# this docker compose file setsup influxdb server with timestamp mqtt data with Qos1, which means mqtt broker hold data until server comes online. this is very professiona
+#and suitable method to handle data loss in case of network failure.
+version: '3.8'
+
+services:
+  # The Time-Series Database
+  influxdb:
+    image: influxdb:2.7
+    container_name: demo_influxdb
+    ports:
+      - "8086:8086"
+    volumes:
+      # This forces Docker to save everything inside your project folder
+      - ./influxdb_data:/var/lib/influxdb2
+    restart: unless-stopped
+
+  # The MQTT to Database Bridge
+  telegraf:
+    image: telegraf:1.30
+    container_name: demo_telegraf
+    depends_on:
+      - influxdb
+    volumes:
+      - ./telegraf.conf:/etc/telegraf/telegraf.conf:ro
+    restart: unless-stopped
